@@ -1,3 +1,5 @@
+import 'package:dietapp_v002/firestore/firestore_search.dart';
+import 'package:dietapp_v002/firestore/firestore_search_copy.dart';
 import 'package:dietapp_v002/screens/recipies_screen/recipies_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,6 +28,14 @@ class HomeGridWidgets extends StatelessWidget {
     return ListView(
       children: [
         ListTile(
+          title: const Text("Food Search"),
+          subtitle: const Text("Search your favorite food"),
+          trailing: const Icon(Icons.search),
+          onTap: () {
+            Get.to(() => const FirestoreSearch());
+          },
+        ),
+        ListTile(
           leading: Image.network(
               "https://firebasestorage.googleapis.com/v0/b/dietapp-in.appspot.com/o/recipe%20image.jpg?alt=media&token=6765c45e-a14e-4646-82b9-d12c90294496"),
           title: const Text("Recipies"),
@@ -43,7 +53,10 @@ class HomeGridWidgets extends StatelessWidget {
           title: const Text("Ingredients"),
           subtitle:
               const Text("500+ ingredients nutrition info.  Ref : ICMR, NIN"),
-          trailing: const Icon(Icons.hourglass_disabled),
+          trailing: const Icon(Icons.hourglass_top),
+          onTap: () {
+            Get.to(() => const FirestoreSearch2());
+          },
         ),
         ListTile(
           leading: Image.network(

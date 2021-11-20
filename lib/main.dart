@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+//import 'firestore/firestore_search.dart';
+
 Future<void> main() async {
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
     return const GetMaterialApp(
       title: 'DietApp',
       home: HomeScreen(),
+      //home: FirestoreSearch(),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dietapp_v002/screens/recipies_screen/nonveg_recipies.dart/nonveg_recipies_copy.dart';
 import 'package:dietapp_v002/screens/recipies_screen/veg_recipies.dart/veg_recipies.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,7 +50,7 @@ class RecipiesMainScreen extends StatelessWidget {
                         "https://firebasestorage.googleapis.com/v0/b/dietapp-in.appspot.com/o/DietApp%20Assets%2FNon%20veg.jpg?alt=media&token=b44092e7-911c-4c42-9674-b4d858123706",
                   ),
                   onTap: () {
-                    Get.to(() => const NonVegRecipies());
+                    Get.to(() => const NonVegRecipies2());
                   }),
               Text(
                 "Non Veg foods",

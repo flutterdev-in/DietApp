@@ -70,7 +70,9 @@ class _VegRecipiesListState extends State<VegRecipiesList> {
                               "Net Energy ${nE}kcal, Protine ${nP}g #Per Serving"),
                           leading: CachedNetworkImage(
                             placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
+                                const CircularProgressIndicator(
+                                  color: Colors.purple,
+                                ),
                             imageUrl:
                                 //"https://firebasestorage.googleapis.com/v0/b/dietapp-in.appspot.com/o/DietApp%20Assets%2Fsweets.jpg?alt=media&token=50fe0edb-7714-4f03-8e09-5ecd07049436",
                                 rD["rImg150"].toString(),

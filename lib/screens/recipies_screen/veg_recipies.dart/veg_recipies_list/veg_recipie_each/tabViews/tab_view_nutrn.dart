@@ -405,7 +405,7 @@ class TabViewNutrn extends StatelessWidget {
                 ExpansionTile(
                   initiallyExpanded: false,
                   title: CustomRowforNutri.forE(
-                    nID: "Omega  6",
+                    nID: "Omega 6+",
                     unit: "",
                     startSize: 40,
                     endSize: 19,
@@ -454,7 +454,7 @@ class TabViewNutrn extends StatelessWidget {
         ExpansionTile(
           title: CustomRowforNutri.forE(
             nID: "Water Soluble Vitamins",
-            unit: "",
+            unit: "µg",
           ),
           children: [
             ExpansionTile(
@@ -529,7 +529,7 @@ class TabViewNutrn extends StatelessWidget {
         ExpansionTile(
           title: CustomRowforNutri.forE(
             nID: "Fat Soluble Vitamins",
-            unit: "",
+            unit: "µg",
           ),
           children: [
             CustomRowforNutri.forSE(

@@ -50,10 +50,10 @@ class CustomRowforNutri extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _rValue;
-    if (_rData[nID!] == null) {
-      _rValue = "     ";
-    } else {
+    try {
       _rValue = double.parse((_rData[nID!]!).toStringAsFixed(precision!));
+    } catch (e) {
+      _rValue = "     ";
     }
 
     return Row(mainAxisSize: MainAxisSize.max, children: [
