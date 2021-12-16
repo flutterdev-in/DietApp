@@ -8,11 +8,12 @@ class TabViewIngredients extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var rIDf = rDataForIng["fID"];
+    var rIDf = rDataForIng["rID"];
     var rPdata = FirebaseFirestore.instance
-        .collection('FoodData')
+        .collection('rData')
         .doc(rIDf)
-        .collection("ingData")
+        .collection("rPdata")
+        .limit(2)
         .snapshots();
 
     return StreamBuilder<QuerySnapshot>(

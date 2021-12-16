@@ -51,7 +51,7 @@ class CustomRowforNutri extends StatelessWidget {
   Widget build(BuildContext context) {
     var _rValue;
     try {
-      _rValue = double.parse((_rData[nID!]!).toStringAsFixed(precision!));
+      _rValue = double.parse((_rData["nutriData"][nID!]!).toStringAsFixed(precision!));
     } catch (e) {
       _rValue = "     ";
     }

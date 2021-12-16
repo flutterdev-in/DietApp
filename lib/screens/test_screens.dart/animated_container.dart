@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 class AnimatedContainerFlex extends StatelessWidget {
   AnimatedContainerFlex({Key? key}) : super(key: key);
   var ht = 100.obs;
@@ -17,7 +16,6 @@ class AnimatedContainerFlex extends StatelessWidget {
               child: Text("hi${ht.value}"),
               onPressed: () {
                 ht.value = ht.value == 100 ? 200 : 100;
-                //ht = ht == 100.obs ? 200.obs : 100.obs;
               },
             ),
           ),

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 class VegRecipeEach extends StatelessWidget {
   VegRecipeEach({Key? key}) : super(key: key);
-  var rData = Get.arguments;
+  var FoodData = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -14,7 +14,7 @@ class VegRecipeEach extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 25,
-            title: Text("${rData['rName'].toString()}"),
+            title: Text("${FoodData['names']['Common_name'].toString()}"),
             bottom: const TabBar(
               tabs: [
                 Text("Nutrition"),
@@ -29,7 +29,7 @@ class VegRecipeEach extends StatelessWidget {
             ),
           ),
           body: TabBarView(
-            children: [TabViewNutrn(), TabViewIngredients(), Text("Loading")],
+            children: [TabViewNutrn(), TabViewIngredients(), Text("Coming soon")],
           ),
         ),
       ),

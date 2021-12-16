@@ -37,6 +37,12 @@ dependencies:
   configurable_expansion_tile_null_safety:
   paginate_firestore: 
   firestore_search:
+  progress_indicators: ^1.0.0
+  animated_text_kit: 
+  firebase_auth:
+  google_sign_in: 
+  font_awesome_flutter:
+  
 
 
   # The following adds the Cupertino Icons font to your application.

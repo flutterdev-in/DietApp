@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dietapp_v002/firestore/firestore_search.dart';
 import 'package:dietapp_v002/firestore/firestore_search_copy.dart';
 import 'package:dietapp_v002/screens/recipies_screen/recipies_screen.dart';
@@ -9,13 +10,38 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('DietApp'),
-        //titleTextStyle: TextStyle(fontStyle: FontStyle.italic),
-        toolbarHeight: 40,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                child: CachedNetworkImage(
+                  imageUrl:
+                      "https://firebasestorage.googleapis.com/v0/b/dietapp-in.appspot.com/o/DietApp%20Icon.png?alt=media&token=4a20e7b0-e60d-4430-a5fe-a04494f037e6",
+                  fit: BoxFit.fill,
+                ),
+              ),
+              const Text('DietApp'),
+            ],
+          ),
+          //titleTextStyle: TextStyle(fontStyle: FontStyle.italic),
+          //toolbarHeight: 40,
+          actions: [
+            InkWell(
+                child: SizedBox(
+                  child: Icon(Icons.search),
+                  width: 100,
+                ),
+                onTap: () {
+                  Get.to(() => const FirestoreSearch2());
+                })
+          ],
+        ),
+        body: const HomeGridWidgets(),
       ),
-      body: const HomeGridWidgets(),
     );
   }
 }

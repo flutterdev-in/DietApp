@@ -4,16 +4,16 @@ import 'package:get/get.dart';
 
 class VegRecipeEach2 extends StatelessWidget {
   VegRecipeEach2({Key? key}) : super(key: key);
-  var rData = Get.arguments;
+  var FoodData = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 25,
-            title: Text("${rData['Common_name'].toString()}"),
+            title: Text("${FoodData['names']['Common_name'].toString()}"),
             bottom: const TabBar(
               tabs: [
                 Text("Nutrition"),
@@ -27,7 +27,7 @@ class VegRecipeEach2 extends StatelessWidget {
             ),
           ),
           body: TabBarView(
-            children: [TabViewNutrn(), Text("Loading")],
+            children: [TabViewNutrn(), Text("Coming soon")],
           ),
         ),
       ),

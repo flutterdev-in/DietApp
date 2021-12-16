@@ -25,7 +25,7 @@ class _FirestoreSearchState extends State<FirestoreSearch> {
                   hintText: "Search Recipies.."),
               onChanged: (val) {
                 setState(() {
-                  name = val;
+                  name = val.toLowerCase();
                 });
               },
             ),
