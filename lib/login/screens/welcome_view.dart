@@ -1,3 +1,4 @@
+import 'package:dietapp_v002/firestore.dart';
 import 'package:dietapp_v002/login/controllers/home_controller.dart';
 import 'package:dietapp_v002/login/controllers/welcome_controller.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class WelcomeView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
+              
               'User Profile',
               style: TextStyle(fontSize: 30, color: Colors.black),
             ),

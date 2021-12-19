@@ -1,4 +1,6 @@
 import 'package:dietapp_v002/app_routes.dart';
+import 'package:dietapp_v002/firestore.dart';
+import 'package:dietapp_v002/firestore_user.dart';
 import 'package:dietapp_v002/login/bindings/home_binding.dart';
 import 'package:dietapp_v002/login/screens/home_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +25,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+
     return GetMaterialApp(
       initialBinding: HomeBinding(),
       title: 'DietApp',
