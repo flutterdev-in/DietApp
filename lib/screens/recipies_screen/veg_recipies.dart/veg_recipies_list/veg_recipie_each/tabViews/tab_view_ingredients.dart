@@ -56,9 +56,10 @@ class TabViewIngredients extends StatelessWidget {
                     var pAmount = rPLmap[rList[rPindex]]["amount"];
                     var pUnit = rPLmap[rList[rPindex]]["unit"];
                     var pName = rPLmap[rList[rPindex]]["name"];
-                    var pNotes = rPLmap[rList[rPindex]]["notes"];
+                    var pNotess = rPLmap[rList[rPindex]]["notes"];
                     var aSpace;
                     var uSpace;
+                    var pNotes;
                     if (pAmount == "") {
                       aSpace = "";
                     } else {
@@ -68,6 +69,11 @@ class TabViewIngredients extends StatelessWidget {
                       uSpace = "";
                     } else {
                       uSpace = " ";
+                    }
+                    if (pNotess == null) {
+                      pNotes = "";
+                    } else {
+                      pNotes = pNotess;
                     }
                     return SingleChildScrollView(
                         scrollDirection: Axis.horizontal,

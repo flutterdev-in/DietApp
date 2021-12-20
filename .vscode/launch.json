@@ -8,6 +8,10 @@
             "name": "Flutter",
             "request": "launch",
             "type": "dart",
+            "rewrites": [ {
+                "source": "**",
+                "destination": "/index.html"
+              } ],
             "args": [
                 "--web-hostname",
                 "localhost",

@@ -19,7 +19,7 @@ class AppRoutes {
     GetPage(
       name: "/",
       page: () => HomeView(),
-      binding: HomeBinding(),
+      //binding: HomeBinding(),
     ),
 
     // Login
@@ -31,11 +31,14 @@ class AppRoutes {
         page: () => WelcomeView(),
         binding: WelcomeBinding()),
 
-    GetPage(name: "/homeScreen2", page: () => HomeScreen2(),binding: WelcomeBinding()),
+    GetPage(
+        name: "/homeScreen2",
+        page: () => HomeScreen2(),
+        binding: WelcomeBinding()),
     //GetPage(name: "/", page: () => FhWebView()),
     GetPage(name: "/homeScreen", page: () => const HomeScreen()),
     GetPage(name: "/firestoreSearch2", page: () => FirestoreSearch2()),
-    // GetPage(name: "/vegRecipeEach2", page: () => VegRecipeEach2()),
-    // GetPage(name: "/vegRecipeEach", page: () => VegRecipeEach()),
+    GetPage(name: "/vegRecipeEach2", page: () => VegRecipeEach2()),
+    GetPage(name: "/vegRecipeEach", page: () => VegRecipeEach()),
   ];
 }

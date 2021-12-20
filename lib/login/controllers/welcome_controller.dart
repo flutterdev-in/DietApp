@@ -12,15 +12,17 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class WelcomeController extends GetxController {
+  var map = {};
   HomeController homeController = Get.find();
   late User user;
   @override
   void onInit() async {
     user = Get.arguments;
-    GetStorage().write("uid", user.uid);
-
-    var userGoogle = UserGoogleeData(
-      googleUid: user.uid,
+    //GetStorage().write("uid", user.uid);
+    var userGoogle = UserGoogle(
+      docID: user.uid,
+      UID: user.uid,
+      googleUID: user.uid,
       googleDisplayName: user.displayName,
       googleEmail: user.email,
       googlePhotoURL: user.photoURL,
@@ -29,7 +31,19 @@ class WelcomeController extends GetxController {
       googlePhoneNumber: user.phoneNumber,
       googleCreationTime: user.metadata.creationTime,
       googleLastSignInTime: user.metadata.lastSignInTime,
-    ).toJson();
+    ).toMap();
+    // var userGoogle = UserGoogleData(
+    //   googleUID: user.uid,
+    //   googleDisplayName: user.displayName,
+    //   googleEmail: user.email,
+    //   googlePhotoURL: user.photoURL,
+    //   googleEmailVerified: user.emailVerified,
+    //   googleIsAnonymous: user.isAnonymous,
+    //   googlePhoneNumber: user.phoneNumber,
+    //   googleCreationTime: user.metadata.creationTime,
+    //   googleLastSignInTime: user.metadata.lastSignInTime,
+    // ).toJson();
+    //var userModel = UserModel(uid: user.uid, docId: user.uid).toJson();
 
     print(userGoogle);
     await FirebaseFirestore.instance
@@ -38,16 +52,19 @@ class WelcomeController extends GetxController {
         .get()
         .then((DocumentSnapshot documentSnapshot) async {
       if (documentSnapshot.exists) {
-        
+        // Map<String, dynamic> d =
+        //     documentSnapshot.data() as Map<String, dynamic>;
+        // map = d;
+        // print(d['google_email']);
       } else {
         await FirebaseFirestore.instance
             .collection("users")
             .doc(user.uid)
-            .set({"uid": user.uid});
-        await FirebaseFirestore.instance
-            .collection("users")
-            .doc(user.uid)
-            .update(userGoogle);
+            .set(userGoogle);
+        // await FirebaseFirestore.instance
+        //     .collection("users")
+        //     .doc(user.uid)
+        //     .update(userGoogle);
       }
     });
     super.onInit();
