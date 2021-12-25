@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserGoogle {
+class UserWelcomeData {
   var UID;
   var googleDisplayName;
   var googleEmail;
@@ -11,7 +11,8 @@ class UserGoogle {
   var googleCreationTime;
   var googleLastSignInTime;
 
-  UserGoogle({
+
+  UserWelcomeData({
     this.UID,
     this.googleDisplayName,
     this.googleEmail,
@@ -21,6 +22,7 @@ class UserGoogle {
     this.googlePhoneNumber,
     this.googleCreationTime,
     this.googleLastSignInTime,
+    
   });
 
   Map<String, dynamic> toMap() {
@@ -38,11 +40,13 @@ class UserGoogle {
         "googleCreationTime": googleCreationTime,
         "googleLastSignInTime": googleLastSignInTime,
       },
+
     };
   }
 
-  factory UserGoogle.fromMap(Map map) {
-    return UserGoogle(
+
+  factory UserWelcomeData.fromMap(Map map) {
+    return UserWelcomeData(
       UID: map["UID"],
       googleDisplayName: map["googleData"]["googleDisplayName"],
       googleEmail: map["googleData"]["googleEmail"],
@@ -52,6 +56,7 @@ class UserGoogle {
       googlePhoneNumber: map["googleData"]["googlePhoneNumber"],
       googleCreationTime: map["googleData"]["googleCreationTime"],
       googleLastSignInTime: map["googleData"]["googleLastSignInTime"],
+
     );
   }
 }

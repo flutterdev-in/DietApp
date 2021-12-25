@@ -13,12 +13,14 @@ class UserProfileModel {
   var userID;
   var displayName;
   var nativeLanguage;
+  var bioData;
 
   UserProfileModel({
     this.photoURL,
-    this.userID,
+    this.userID = "",
     this.displayName,
-    this.nativeLanguage,
+    this.nativeLanguage = "English",
+    this.bioData = "",
   });
 
   Map<String, dynamic> toMap() {
@@ -29,8 +31,8 @@ class UserProfileModel {
         "photoURL": photoURL,
         "displayName": displayName,
         "nativeLanguage": nativeLanguage,
+        "bioData":bioData,
       },
-      
     };
   }
 
@@ -40,6 +42,7 @@ class UserProfileModel {
       photoURL: map["profileData"]["photoURL"],
       displayName: map["profileData"]["displayName"],
       nativeLanguage: map["profileData"]["nativeLanguage"],
+      bioData:map["profileData"]["bioData"],
     );
   }
 

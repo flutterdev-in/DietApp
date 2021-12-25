@@ -30,36 +30,11 @@ class DrawerMainProfileContainer extends StatelessWidget {
         if (documentSnapshot.hasData && documentSnapshot.data!.exists) {
           Map<String, dynamic> data =
               documentSnapshot.data!.data() as Map<String, dynamic>;
-          var displayName;
-          var photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-          var userID = "";
-          var userEmail = UserGoogle.fromMap(data).googleEmail;
-          var userIDorEmail;
-          if (data.containsKey("profileData")) {
-            try {
-              displayName = UserProfileModel.fromMap(data).displayName;
-              //photoURL = UserProfileModel.fromMap(data).photoURL;
-              userID = UserProfileModel.fromMap(data).userID;
-              userIDorEmail = userID;
-            } catch (e) {
-              displayName = UserGoogle.fromMap(data).googleDisplayName;
-              //photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-              userIDorEmail = userEmail;
-            }
-          } else {
-            displayName = UserGoogle.fromMap(data).googleDisplayName;
-            //photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-            userIDorEmail = userEmail;
-          }
-
-          Map<String, dynamic> userProfileMap = {
-            "displayName": displayName,
-            "photoURL": photoURL,
-            "userID": userID,
-            "userEmail": userEmail,
-          };
-          //c.userProfileMap.value = userProfileMap;
-          GetStorage().write("userProfileMap", userProfileMap);
+          var displayName = UserProfileModel.fromMap(data).displayName;;
+          var photoURL = UserWelcomeData.fromMap(data).googlePhotoURL;
+          //var userID = "";
+          var userEmail = UserWelcomeData.fromMap(data).googleEmail;
+         
 
           return ListTile(
             tileColor: Colors.black87,
@@ -72,11 +47,11 @@ class DrawerMainProfileContainer extends StatelessWidget {
               foregroundImage: NetworkImage(photoURL),
             ),
             subtitle: Text(
-              userIDorEmail,
+              userEmail,
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              Get.to(() => UserProfileView(), arguments: userProfileMap);
+              Get.to(() => UserProfileView());
             },
           );
         }

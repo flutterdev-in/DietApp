@@ -50,52 +50,17 @@ class _UserProfileEditState extends State<UserProfileEdit> {
           if (documentSnapshot.hasData && documentSnapshot.data!.exists) {
             Map<String, dynamic> data =
                 documentSnapshot.data!.data() as Map<String, dynamic>;
-            var displayName;
-            var photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-            var userID = " ";
-            var userEmail = UserGoogle.fromMap(data).googleEmail;
-            var userIDorEmail;
-            if (data.containsKey("profileData")) {
-              try {
-                displayName = UserProfileModel.fromMap(data).displayName;
-                //photoURL = UserProfileModel.fromMap(data).photoURL;
-                userID = UserProfileModel.fromMap(data).userID;
-                userIDorEmail = userID;
-              } catch (e) {
-                displayName = UserGoogle.fromMap(data).googleDisplayName;
-                //photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-                userIDorEmail = userEmail;
-              }
-            } else {
-              displayName = UserGoogle.fromMap(data).googleDisplayName;
-              //photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-              userIDorEmail = userEmail;
-            }
-
-            Map<String, dynamic> userProfileMap = {
-              "displayName": displayName,
-              "photoURL": photoURL,
-              "userID": userID,
-              "userEmail": userEmail,
-            };
-            // var isUserExists = false;
-            // checkUser(user) async {
-            //   if (user != null && user != "" && !user.isEmpty) {
-            //     await FirebaseFirestore.instance
-            //         .collection('users')
-            //         .where("userID", isEqualTo: "@$user")
-            //         .limit(1)
-            //         .get()
-            //         .then((QuerySnapshot querySnapshot) {
-            //       if (querySnapshot.docs.length == 1) {
-            //         setState(() {
-            //           isUserExists = true;
-            //         });
-            //       }
-            //     });
-            //   }
-            // }
-
+            
+            var displayName = UserProfileModel.fromMap(data).displayName;
+            var bioData = UserProfileModel.fromMap(data).bioData;
+            var nativeLanguage = UserProfileModel.fromMap(data).nativeLanguage;
+          var photoURL = UserWelcomeData.fromMap(data).googlePhotoURL;
+          //var userID = "";
+          var userEmail = UserWelcomeData.fromMap(data).googleEmail;
+         
+            
+            
+            
             return Scaffold(
               body: FormBuilder(
                 key: _formKey,
@@ -117,7 +82,7 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                           color: Colors.black45,
                           fontSize: 19),
                       controller: TextEditingController(
-                          text: userProfileMap["userEmail"]),
+                          text: userEmail),
                     ),
                     SizedBox(
                       height: 20,
@@ -183,7 +148,7 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                     FormBuilderTextField(
                       valueTransformer: (value) {
                         if (value == null || value == "") {
-                          return userProfileMap["displayName"];
+                          return displayName;
                         } else {
                           return value;
                         }
@@ -205,13 +170,13 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                           labelText: "Display Name"),
                       name: "displayName",
                       controller: TextEditingController(
-                          text: userProfileMap["displayName"]),
+                          text: displayName),
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     FormBuilderDropdown(
-                        initialValue: "Hindi",
+                        initialValue: "English",
                         decoration: InputDecoration(
                             icon: Icon(Icons.language),
                             labelText: "Native language"),
@@ -256,6 +221,7 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                           ),
                         ]),
                     FormBuilderTextField(
+                      
                       name: "bioData",
                       maxLines: 6,
                       maxLength: 200,
@@ -278,7 +244,7 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                               .doc(FirebaseAuth.instance.currentUser!.uid)
                               .update({
                             "profileData": _formKey.currentState!.value,
-                            "userID": _formKey.currentState!.value["userID"]
+                            //"userID": _formKey.currentState!.value["userID"]
                           });
                           Get.back();
                           Get.snackbar(

@@ -33,37 +33,11 @@ class UserProfileView extends StatelessWidget {
             if (documentSnapshot.hasData && documentSnapshot.data!.exists) {
               Map<String, dynamic> data =
                   documentSnapshot.data!.data() as Map<String, dynamic>;
-              var displayName;
-              var photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-              var userID = "";
-              var userEmail = UserGoogle.fromMap(data).googleEmail;
-              var userIDorEmail;
-              if (data.containsKey("profileData")) {
-                try {
-                  displayName = UserProfileModel.fromMap(data).displayName;
-                  //photoURL = UserProfileModel.fromMap(data).photoURL;
-                  userID = UserProfileModel.fromMap(data).userID;
-                  userIDorEmail = userID;
-                } catch (e) {
-                  displayName = UserGoogle.fromMap(data).googleDisplayName;
-                  //photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-                  userIDorEmail = userEmail;
-                }
-              } else {
-                displayName = UserGoogle.fromMap(data).googleDisplayName;
-                //photoURL = UserGoogle.fromMap(data).googlePhotoURL;
-                userIDorEmail = userEmail;
-              }
-
-              Map<String, dynamic> userProfileMap = {
-                "displayName": displayName,
-                "photoURL": photoURL,
-                "userID": userID,
-                "userEmail": userEmail,
-              };
-              //c.userProfileMap.value = userProfileMap;
-              GetStorage().write("userProfileMap", userProfileMap);
-
+              var displayName = UserProfileModel.fromMap(data).displayName;;
+          var photoURL = UserWelcomeData.fromMap(data).googlePhotoURL;
+          //var userID = "";
+          var userEmail = UserWelcomeData.fromMap(data).googleEmail;
+         
               return Container(
                 padding: EdgeInsets.only(top: 15),
                 height: 100,
@@ -74,7 +48,7 @@ class UserProfileView extends StatelessWidget {
                       children: [
                         CircleAvatar(
                           foregroundImage:
-                              NetworkImage(userProfileMap["photoURL"]),
+                              NetworkImage(photoURL),
                           minRadius: 60,
                         ),
                         SizedBox(
@@ -87,7 +61,7 @@ class UserProfileView extends StatelessWidget {
                               height: 12,
                             ),
                             Text(
-                              userProfileMap["displayName"],
+                              displayName,
                               textScaleFactor: 1.8,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -95,10 +69,10 @@ class UserProfileView extends StatelessWidget {
                             //   height: 4,
                             // ),
                             Text(
-                              userProfileMap["userEmail"],
+                              userEmail,
                               textScaleFactor: 1.2,
                             ),
-                            Text(userProfileMap["userID"]),
+                            // Text(userProfileMap["userID"]),
                           ],
                         ),
                       ],
@@ -110,8 +84,8 @@ class UserProfileView extends StatelessWidget {
                         width: 60,
                       ),
                       onTap: () {
-                        Get.to(() => UserProfileEdit(),
-                            arguments: userProfileMap);
+                        Get.to(() => UserProfileEdit()
+                            );
                       },
                     ),
                   ],
