@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dietapp_v002/firestore/firestore_search_copy.dart';
 import 'package:dietapp_v002/login/controllers/welcome_controller.dart';
+import 'package:dietapp_v002/screens/drawer/mainView/main_drawer.dart';
+import 'package:dietapp_v002/screens/drawer/mainView/main_profile_container.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,53 +15,9 @@ class HomeScreen2 extends GetView<WelcomeController> {
     return SafeArea(
       child: Scaffold(
         drawerScrimColor: Colors.black87,
-        drawer: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'User Profile',
-              style: TextStyle(fontSize: 30, color: Colors.black),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            CircleAvatar(
-              radius: 70,
-              backgroundImage: NetworkImage(controller.user.photoURL!),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'Display Name : ${controller.user.displayName}',
-              style: TextStyle(fontSize: 18, color: Colors.black),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              controller.user.email!,
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            ConstrainedBox(
-              constraints: BoxConstraints.tightFor(width: 120),
-              child: ElevatedButton(
-                child: Text(
-                  "Logout",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
-                ),
-                onPressed: () {
-                  controller.logout();
-                },
-              ),
-            ),
-          ],
-        ),
+        drawer: MainDrawer(),
         appBar: AppBar(
+          backgroundColor: Color.fromRGBO(78, 153, 136, 1),
           title: Row(
             children: [
               // Container(
@@ -118,6 +76,7 @@ class HomeScreen2 extends GetView<WelcomeController> {
                 fontSize: 30,
               ),
             ),
+            
           ],
         ),
       ),

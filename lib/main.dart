@@ -25,10 +25,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-
     return GetMaterialApp(
+      themeMode: ThemeMode.system,
       initialBinding: HomeBinding(),
+      theme: ThemeData(primaryColor: Colors.pink),
       title: 'DietApp',
       initialRoute: "/",
       //FirebaseAuth.instance.currentUser != null?  "/loginScreen" : "/welcomeScreen",

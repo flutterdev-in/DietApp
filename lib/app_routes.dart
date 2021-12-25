@@ -4,7 +4,6 @@ import 'package:dietapp_v002/login/bindings/login_binding.dart';
 import 'package:dietapp_v002/login/bindings/welcome_binding.dart';
 import 'package:dietapp_v002/login/screens/home_view.dart';
 import 'package:dietapp_v002/login/screens/login_view.dart';
-import 'package:dietapp_v002/login/screens/welcome_view.dart';
 import 'package:dietapp_v002/screens/homescreen.dart';
 import 'package:dietapp_v002/screens/homescreen2.dart';
 import 'package:dietapp_v002/screens/recipies_screen/veg_recipies.dart/veg_recipies_list/veg_recipie_each/veg_recipie_each.dart';
@@ -26,10 +25,7 @@ class AppRoutes {
     GetPage(
         name: "/loginScreen", page: () => LoginView(), binding: LoginBinding()),
     // Welcome
-    GetPage(
-        name: "/welcomeScreen",
-        page: () => WelcomeView(),
-        binding: WelcomeBinding()),
+    
 
     GetPage(
         name: "/homeScreen2",
