@@ -3,6 +3,7 @@ import 'package:dietapp_v002/firestore/firestore_search_copy.dart';
 import 'package:dietapp_v002/login/controllers/welcome_controller.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_drawer.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_profile_container.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/recipies_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -76,7 +77,25 @@ class HomeScreen2 extends GetView<WelcomeController> {
                 fontSize: 30,
               ),
             ),
-            
+            SizedBox(
+              height: 100,
+            ),
+            ListTile(
+              tileColor: Colors.lightBlue[50],
+              title: Text(
+                "Edit Recipies",
+                textScaleFactor: 1.5,
+              ),
+              leading: Icon(
+                Icons.food_bank,
+                size: 35,
+                color: Colors.green,
+              ),
+              trailing: Icon(Icons.edit),
+              onTap: () {
+                Get.to(RecipiesListViewForEdit());
+              },
+            )
           ],
         ),
       ),
