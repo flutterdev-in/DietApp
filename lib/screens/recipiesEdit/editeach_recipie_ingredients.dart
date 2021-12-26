@@ -1,18 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/edit_each_ing_of_recipie.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/models/each_ing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/avatar/gf_avatar.dart';
+import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:getwidget/getwidget.dart';
 
-class EditEachRecipieIngredients extends StatelessWidget {
+class EditEachRecipieIngredients extends StatefulWidget {
   EditEachRecipieIngredients({Key? key}) : super(key: key);
-  var rDataForIng = Get.arguments;
 
   @override
+  State<EditEachRecipieIngredients> createState() =>
+      _EditEachRecipieIngredientsState();
+}
+
+class _EditEachRecipieIngredientsState
+    extends State<EditEachRecipieIngredients> {
+  //var rDataForIng = Get.arguments;
+  @override
   Widget build(BuildContext context) {
-    var rIDf = Get.arguments;
+    var docID = Get.arguments;
     var rPdata = FirebaseFirestore.instance
         .collection('FoodData')
-        .doc(rIDf)
+        .doc(docID)
         .collection("ingData")
         .snapshots();
 
@@ -27,127 +38,130 @@ class EditEachRecipieIngredients extends StatelessWidget {
             return Text("Loading");
           }
           if (snapshot.hasData) {
-            // final List _list = snapshot.data!.docs;
-            // Map<String, dynamic> _rPdata =
-            //     _list[0].data() as Map<String, dynamic>;
-            // //var rPdataP = _rPdata.keys.toList();
-            // var rList0 = _rPdata.values.toList();
-
-            // for (var i in rList0) {
-            //   rPLmap.addAll(i);
-            //   i.entries.map((e) => rList.add(e.key)).toList();
-            //   rList.sort();
-            // }
             var datafromQuery = EachIngModel().datafromQuery(snapshot);
-            List rList = datafromQuery[0];
-            Map rPLmap = datafromQuery[1];
+            Map oldIngMap = datafromQuery[0];
+            List rList = datafromQuery[1];
+            Map rPLmap = datafromQuery[2];
 
             return ListView.builder(
-                padding: EdgeInsets.all(5),
+                //padding: EdgeInsets.all(5),
                 itemCount: rList.length,
                 itemBuilder: (context, rPindex) {
-                  var ing = rPLmap[rList[rPindex]];
+                  var eachIngMap = rPLmap[rList[rPindex]];
 
-                  if (ing is! Map) {
-                    return Text(
-                      ing.toString(),
-                      textScaleFactor: 1.3,
-                      style: TextStyle(
-                          color: Colors.green[900],
-                          fontWeight: FontWeight.bold),
+                  if (eachIngMap is! Map) {
+                    return GFListTile(
+                      title: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          eachIngMap.toString(),
+                          textScaleFactor: 1.6,
+                          style: TextStyle(
+                              color: Colors.green[900],
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      // avatar: GFAvatar(
+                      //     backgroundColor: Colors.black12,
+                      //     shape: GFAvatarShape.square,
+                      //     child: Icon(Icons.food_bank,size: double.infinity,)),
                     );
                   }
-                  if (ing is Map) {
-                    EachIngModel ingModel = EachIngModel.fromMap(ing);
-                    var iCodeName = ingModel.iCode;
-                    var iCode = ingModel.iCode;
-                    void getIcode() async {
-                      await FirebaseFirestore.instance
-                          .collection("FoodData")
-                          .doc(ingModel.iCode)
-                          .get()
-                          .then((DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists) {
-                          var doc = documentSnapshot.data() as Map;
-                          iCodeName = doc["names"]["Common_name"];
-                        }
-                      });
-                    }
+                  if (eachIngMap is Map) {
+                    EachIngModel ingModel = EachIngModel.fromMap(eachIngMap);
 
-                    getIcode();
+                    var iCode = ingModel.iCode;
+
                     var aSpace = ingModel.amount == "" ? "" : " ";
                     var uSpace = ingModel.unit == "" ? "" : " ";
                     var pNotes = ingModel.notes;
                     var nwUnit =
-                        ingModel.NwUnit == null ? "(...)" : ingModel.NwUnit;
-                    return ListTile(
-                      
-                      isThreeLine: true,
-                      title: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            Text(
-                              "${ingModel.NwAmt} ${nwUnit} || ",
-                              textScaleFactor: 1.2,
-                            ),
-                            StreamBuilder<DocumentSnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .collection("FoodData")
-                                  .doc(ingModel.iCode)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<DocumentSnapshot>
-                                      documentSnapshot) {
-                                if (documentSnapshot.hasError) {
-                                  return const Text('Error');
-                                }
+                        ingModel.NwUnit == null ? "(null)" : ingModel.NwUnit;
 
-                                if (documentSnapshot.hasData &&
-                                    !documentSnapshot.data!.exists) {
-                                  return const Text("No records found");
-                                }
+                    return StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("FoodData")
+                            .doc(ingModel.iCode)
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> documentSnapshot) {
+                          if (documentSnapshot.hasError) {
+                            return const ListTile(leading: Icon(Icons.error));
+                          }
 
-                                if (documentSnapshot.hasData &&
-                                    documentSnapshot.data!.exists) {
-                                  Map<String, dynamic> data =
-                                      documentSnapshot.data!.data()
-                                          as Map<String, dynamic>;
-                                  var nm = data["names"]["Common_name"];
-                                  return Text(
-                                    nm == "" ? "(???)" : nm,
-                                    textScaleFactor: 1.2,
-                                  );
-                                }
+                          if (documentSnapshot.hasData &&
+                              !documentSnapshot.data!.exists) {
+                            return const ListTile(leading: Icon(Icons.error));
+                          }
 
-                                return Text("Loading..");
+                          if (documentSnapshot.hasData &&
+                              documentSnapshot.data!.exists) {
+                            Map<String, dynamic> data = documentSnapshot.data!
+                                .data() as Map<String, dynamic>;
+                            var img = data["imgURL"]["img150"];
+                            var iCodeName = data["names"]["Common_name"];
+                            var servingData = data["servingData"];
+
+                            var isNIN =
+                                data["fDetails"]["sourceWebsite"] == "ICMR-NIN"
+                                    ? true
+                                    : false;
+
+                            List forEditIngList = [
+                              docID,
+                              oldIngMap,
+                              eachIngMap,
+                              iCode,
+                              iCodeName,
+                              servingData,
+                              isNIN,
+                            ];
+
+                            return GFListTile(
+                              onTap: () {
+                                Get.to(EditEachIngOfRecipie(),arguments: forEditIngList);
                               },
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // Text(
-                      //   "${ingModel.NwAmt} ${nwUnit} | ${iCodeName}",
-                      //   textScaleFactor: 1.3,
-                      // )),
-                      subtitle: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Text(
-                            "${ingModel.amount}$aSpace${ingModel.unit}$uSpace${ingModel.name} $pNotes \n TotalQty = ${ingModel.QtyInGms} g,  iCode = ${ingModel.iCode}",
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                              color: Colors.brown,
-                            )),
-                      ),
-                    );
+                              padding: EdgeInsets.all(2),
+                              margin: EdgeInsets.all(2),
+                              avatar: img == null
+                                  ? Icon(Icons.error)
+                                  : GFAvatar(
+                                      backgroundColor: Colors.blueGrey[700],
+                                      child: GFImageOverlay(
+                                        shape: BoxShape.circle,
+                                        image: NetworkImage(img),
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      )),
+                              title: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  "${ingModel.NwAmt} ${nwUnit} || $iCodeName",
+                                  textScaleFactor: 1.1,
+                                ),
+                              ),
+                              subTitle: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                    "${ingModel.amount}$aSpace${ingModel.unit}$uSpace${ingModel.name} $pNotes \n TotalQty = ${ingModel.QtyInGms} g,  iCode = ${ingModel.iCode}",
+                                    textScaleFactor: 1.1,
+                                    style: TextStyle(
+                                      color: Colors.brown,
+                                    )),
+                              ),
+                            );
+                          } else {
+                            return const ListTile(leading: Icon(Icons.error));
+                          }
+                        });
                   } else {
-                    return Text("Data missing");
+                    return Text("Data ");
                   }
                 });
-          } else {
-            return Text("Data ");
           }
+          return ListTile(
+            title: Text("Error loading data"),
+          );
         });
   }
 }

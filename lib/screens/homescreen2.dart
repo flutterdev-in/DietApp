@@ -6,6 +6,9 @@ import 'package:dietapp_v002/screens/drawer/mainView/main_profile_container.dart
 import 'package:dietapp_v002/screens/recipiesEdit/recipies_listview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:getwidget/components/avatar/gf_avatar.dart';
+import 'package:getwidget/components/list_tile/gf_list_tile.dart';
+import 'package:getwidget/getwidget.dart';
 
 class HomeScreen2 extends GetView<WelcomeController> {
   HomeScreen2({Key? key}) : super(key: key);
@@ -95,7 +98,9 @@ class HomeScreen2 extends GetView<WelcomeController> {
               onTap: () {
                 Get.to(RecipiesListViewForEdit());
               },
-            )
+            ),
+         
+            
           ],
         ),
       ),

@@ -28,19 +28,36 @@ class _RecipiesListViewForEditState extends State<RecipiesListViewForEdit> {
           itemCount: 50,
           itemBuilder: (BuildContext context, int index) {
             var isTileTap = false;
-            String key = recipiesMap.keys.elementAt(index);
-            String img = recipiesMap[key]["img150"];
-            String title = recipiesMap[key]["Common_name"];
+            String docID = recipiesMap.keys.elementAt(index);
+            String img = recipiesMap[docID]["img150"];
+            String title = recipiesMap[docID]["Common_name"];
             var isTap = false;
 
             return GFListTile(
-              onTap: () {Get.to(EditEachRecipie(), arguments: key);},
+              padding: EdgeInsets.all(2),
+              margin: EdgeInsets.all(2),
+              onTap: () {
+                Get.to(EditEachRecipie(), arguments: docID);
+              },
               color: isTap ? Colors.black12 : Colors.white,
               avatar: GFAvatar(
-                  backgroundColor: Colors.black12,
-                  shape: GFAvatarShape.standard,
-                  child: Icon(Icons.food_bank)
+                backgroundColor: Colors.white,
+                child: CircleAvatar(
+                  child: CachedNetworkImage(
+                    placeholder: (context, url) => const GFLoader(
+                      type: GFLoaderType.ios,
+                    ),
+                    imageUrl: img,
+                    width: double.infinity,
+                    height: double.infinity,
+                    errorWidget: (context, url, error) {
+                      return const GFLoader(
+                        type: GFLoaderType.ios,
+                      );
+                    },
                   ),
+                ),
+              ),
               titleText: title,
             );
 

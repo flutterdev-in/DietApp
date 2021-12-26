@@ -3,11 +3,11 @@ import 'package:dietapp_v002/firestore_models/firestore_instances.dart';
 import 'package:flutter/cupertino.dart';
 
 class EachIngModel {
-  var NwAmt,NwUnit, NwName, QtyInGms, amount, iCode, name, unit, notes;
+  var NwAmt, NwUnit, NwName, QtyInGms, amount, iCode, name, unit, notes;
   EachIngModel({
     this.NwAmt,
     this.NwName,
-this.NwUnit,
+    this.NwUnit,
     this.QtyInGms,
     this.amount,
     this.iCode,
@@ -26,7 +26,7 @@ this.NwUnit,
       "name": name,
       "unit": unit,
       "notes": notes,
-      "NwUnit":NwUnit,
+      "NwUnit": NwUnit,
     };
   }
 
@@ -47,9 +47,9 @@ this.NwUnit,
   datafromQuery(AsyncSnapshot<QuerySnapshot> snapshot) {
     if (snapshot.hasData) {
       final List _list = snapshot.data!.docs;
-      Map<String, dynamic> _rPdata = _list[0].data() as Map<String, dynamic>;
+      Map<String, dynamic> oldIngMap = _list[0].data() as Map<String, dynamic>;
       //var rPdataP = _rPdata.keys.toList();
-      var rList0 = _rPdata.values.toList();
+      var rList0 = oldIngMap.values.toList();
 
       List rList = [];
       Map rPLmap = {};
@@ -58,10 +58,12 @@ this.NwUnit,
         i.entries.map((e) => rList.add(e.key)).toList();
         rList.sort();
       }
-      var ingListMap = [rList, rPLmap];
+      var ingListMap = [oldIngMap, rList, rPLmap];
       return ingListMap;
     }
   }
+
+  updatedIngMaptoFire(docID, oldIngMap, newIngMap) {}
 
   iCodeName(iCode) async {
     return StreamBuilder<DocumentSnapshot>(
@@ -87,6 +89,32 @@ this.NwUnit,
 
         return Text("Loading..");
       },
+    );
+  }
+}
+
+class ForEditIng {
+  var docID, oldIngMap, eachIngMap, iCode, iCodeName,servingData,isNIN;
+
+  ForEditIng(
+      {this.docID,
+      this.eachIngMap,
+      this.iCode,
+      this.iCodeName,
+      this.oldIngMap,
+      this.servingData,
+      this.isNIN,
+      });
+
+  factory ForEditIng.fromList(List argList) {
+    return ForEditIng(
+      docID: argList[0],
+      oldIngMap: argList[1],
+      eachIngMap: argList[2],
+      iCode: argList[3],
+      iCodeName: argList[4],
+      servingData: argList[5],
+      isNIN: argList[6],
     );
   }
 }
