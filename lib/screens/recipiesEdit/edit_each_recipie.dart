@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_v002/screens/recipiesEdit/editeach_recipie_ingredients.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/.editeach_recipie_ingredients.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dietapp_v002/screens/recipiesEdit/edit_each_ing_of_recipie.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/.edit_each_ing_of_recipie.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/models/each_ing_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,28 +17,34 @@ class EditEachRecipieIngredients extends StatefulWidget {
 
 class _EditEachRecipieIngredientsState
     extends State<EditEachRecipieIngredients> {
+      ForEditingController fctrl = Get.put(ForEditingController());
+  String docID = Get.arguments;
   //var rDataForIng = Get.arguments;
   @override
   Widget build(BuildContext context) {
-    var docID = Get.arguments;
     var rPdata = FirebaseFirestore.instance
         .collection('FoodData')
         .doc(docID)
         .collection("ingData")
+        .doc("ingDataDoc")
         .snapshots();
 
-    return StreamBuilder<QuerySnapshot>(
+    return StreamBuilder<DocumentSnapshot>(
         stream: rPdata,
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
+        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> documentSnapshot) {
+                          if (documentSnapshot.hasError) {
+                            return const ListTile(leading: Icon(Icons.error));
+                          }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
-          }
-          if (snapshot.hasData) {
-            var datafromQuery = EachIngModel().datafromQuery(snapshot);
+                          if (documentSnapshot.hasData &&
+                              !documentSnapshot.data!.exists) {
+                            return const ListTile(leading: Icon(Icons.error));
+                          }
+
+                          if (documentSnapshot.hasData &&
+                              documentSnapshot.data!.exists) {
+            var datafromQuery = EachIngModel().datafromQuery(documentSnapshot);
             Map oldIngMap = datafromQuery[0];
             List rList = datafromQuery[1];
             Map rPLmap = datafromQuery[2];
@@ -61,10 +67,6 @@ class _EditEachRecipieIngredientsState
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-                      // avatar: GFAvatar(
-                      //     backgroundColor: Colors.black12,
-                      //     shape: GFAvatarShape.square,
-                      //     child: Icon(Icons.food_bank,size: double.infinity,)),
                     );
                   }
                   if (eachIngMap is Map) {
@@ -106,7 +108,11 @@ class _EditEachRecipieIngredientsState
                                 data["fDetails"]["sourceWebsite"] == "ICMR-NIN"
                                     ? true
                                     : false;
-
+                            var realValues =
+                                "${ingModel.amount}$aSpace${ingModel.unit}$uSpace${ingModel.name} $pNotes";
+                            var oldValues =
+                                "${ingModel.NwAmt} ${nwUnit} || $iCodeName\n TotalQty = ${ingModel.QtyInGms} g,  iCode = ${ingModel.iCode}";
+                            var oldImg = img;
                             List forEditIngList = [
                               docID,
                               oldIngMap,
@@ -115,11 +121,15 @@ class _EditEachRecipieIngredientsState
                               iCodeName,
                               servingData,
                               isNIN,
+                              realValues,
+                              oldValues,
+                              oldImg,
                             ];
 
                             return GFListTile(
                               onTap: () {
-                                Get.to(EditEachIngOfRecipie(),arguments: forEditIngList);
+                                Get.to(EditEachIngOfRecipie(),
+                                    arguments: forEditIngList);
                               },
                               padding: EdgeInsets.all(2),
                               margin: EdgeInsets.all(2),

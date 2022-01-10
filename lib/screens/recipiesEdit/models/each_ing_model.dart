@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_v002/firestore_models/firestore_instances.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 class EachIngModel {
   var NwAmt, NwUnit, NwName, QtyInGms, amount, iCode, name, unit, notes;
@@ -44,10 +45,13 @@ class EachIngModel {
     );
   }
 
-  datafromQuery(AsyncSnapshot<QuerySnapshot> snapshot) {
-    if (snapshot.hasData) {
-      final List _list = snapshot.data!.docs;
-      Map<String, dynamic> oldIngMap = _list[0].data() as Map<String, dynamic>;
+  datafromQuery(AsyncSnapshot<DocumentSnapshot> documentSnapshot) {
+    if (documentSnapshot.hasData &&
+                              documentSnapshot.data!.exists) {
+      //final List _list = documentSnapshot.data!.docs;
+
+      
+      Map<String, dynamic> oldIngMap = documentSnapshot.data!.data() as Map<String, dynamic>;
       //var rPdataP = _rPdata.keys.toList();
       var rList0 = oldIngMap.values.toList();
 
@@ -94,17 +98,29 @@ class EachIngModel {
 }
 
 class ForEditIng {
-  var docID, oldIngMap, eachIngMap, iCode, iCodeName,servingData,isNIN;
+  var docID,
+      oldIngMap,
+      eachIngMap,
+      iCode,
+      iCodeName,
+      servingData,
+      isNIN,
+      realValues,
+      oldValues,
+      oldImg;
 
-  ForEditIng(
-      {this.docID,
-      this.eachIngMap,
-      this.iCode,
-      this.iCodeName,
-      this.oldIngMap,
-      this.servingData,
-      this.isNIN,
-      });
+  ForEditIng({
+    this.docID,
+    this.eachIngMap,
+    this.iCode,
+    this.iCodeName,
+    this.oldIngMap,
+    this.servingData,
+    this.isNIN,
+    this.realValues,
+    this.oldValues,
+    this.oldImg,
+  });
 
   factory ForEditIng.fromList(List argList) {
     return ForEditIng(
@@ -115,6 +131,34 @@ class ForEditIng {
       iCodeName: argList[4],
       servingData: argList[5],
       isNIN: argList[6],
+      realValues: argList[7],
+      oldValues: argList[8],
+      oldImg: argList[9],
     );
   }
+
+  List listBowls(Map servingData) {
+    List listBowl = [];
+    if (servingData.containsKey("indexes")) {
+      for (int i in [1, 2, 3, 4, 5, 6, 7]) {
+        for (var j in servingData["indexes"].keys) {
+          if (servingData["indexes"][j] == i) {
+            listBowl.add(j);
+          }
+        }
+      }
+    } else if (servingData.containsKey("servingItem")) {
+      listBowl.add(servingData["servingItem"]);
+    } else {
+      listBowl.addAll([
+        "gms",
+      ]);
+    }
+    return listBowl;
+  }
+}
+
+class ForEditingController extends GetxController {
+  var nm = "".obs;
+  var foodIcode = "".obs;
 }

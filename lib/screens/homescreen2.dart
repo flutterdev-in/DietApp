@@ -1,19 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dietapp_v002/fireStorage/get_URLs.dart';
 import 'package:dietapp_v002/firestore/firestore_search_copy.dart';
 import 'package:dietapp_v002/login/controllers/welcome_controller.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_drawer.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_profile_container.dart';
-import 'package:dietapp_v002/screens/recipiesEdit/recipies_listview.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_screen/new_0uodated_list.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_screen/serach_list.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/nin_measures_edit_form.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/nin_not_updated_list.dart';
+
+import 'package:dietapp_v002/screens/recipiesEdit/eachRecipie/recipies_listview.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/components/avatar/gf_avatar.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:paginate_firestore/paginate_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class HomeScreen2 extends GetView<WelcomeController> {
   HomeScreen2({Key? key}) : super(key: key);
   WelcomeController welcomeController = Get.put(WelcomeController());
-
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,20 +34,9 @@ class HomeScreen2 extends GetView<WelcomeController> {
           backgroundColor: Color.fromRGBO(78, 153, 136, 1),
           title: Row(
             children: [
-              // Container(
-              //   width: 40,
-              //   height: 40,
-              //   child: CachedNetworkImage(
-              //     imageUrl:
-              //         "https://firebasestorage.googleapis.com/v0/b/dietapp-in.appspot.com/o/DietApp%20Icon.png?alt=media&token=4a20e7b0-e60d-4430-a5fe-a04494f037e6",
-              //     fit: BoxFit.fill,
-              //   ),
-              // ),
               const Text('DietApp'),
             ],
           ),
-          //titleTextStyle: TextStyle(fontStyle: FontStyle.italic),
-          //toolbarHeight: 40,
           actions: [
             InkWell(
                 child: SizedBox(
@@ -50,9 +49,13 @@ class HomeScreen2 extends GetView<WelcomeController> {
           ],
         ),
         body: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text(
+              "V0.3",
+              textScaleFactor: 1.3,
+            ),
             Text(
               "Search and get accurate nutrition info of your favorite food from",
               style: TextStyle(
@@ -62,23 +65,15 @@ class HomeScreen2 extends GetView<WelcomeController> {
             SizedBox(
               height: 50,
             ),
-            Text(
-              "2000+ Recipies",
-              style: TextStyle(
-                fontSize: 30,
+            ListTile(
+              title: Text(
+                "Edit recipies ingredients",
+                textScaleFactor: 1.5,
               ),
-            ),
-            Text(
-              "&",
-              style: TextStyle(
-                fontSize: 30,
-              ),
-            ),
-            Text(
-              "500+ ICMR-NIN Foods",
-              style: TextStyle(
-                fontSize: 30,
-              ),
+              tileColor: Colors.yellow,
+              onTap: () {
+                Get.to(RecipiesListViewForEdit());
+              },
             ),
             SizedBox(
               height: 100,
@@ -86,7 +81,7 @@ class HomeScreen2 extends GetView<WelcomeController> {
             ListTile(
               tileColor: Colors.lightBlue[50],
               title: Text(
-                "Edit Recipies",
+                "Search for update",
                 textScaleFactor: 1.5,
               ),
               leading: Icon(
@@ -96,11 +91,31 @@ class HomeScreen2 extends GetView<WelcomeController> {
               ),
               trailing: Icon(Icons.edit),
               onTap: () {
-                Get.to(RecipiesListViewForEdit());
+                Get.to(SearchForUpdate());
               },
             ),
-         
-            
+            SizedBox(
+              height: 20,
+            ),
+            ListTile(
+              tileColor: Colors.lightBlue[50],
+              title: Text(
+                "Edit Measurements",
+                textScaleFactor: 1.5,
+              ),
+              leading: Icon(
+                Icons.food_bank,
+                size: 35,
+                color: Colors.green,
+              ),
+              trailing: Icon(Icons.edit),
+              onTap: () {
+                Get.to(NINnotUpdatedList());
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),

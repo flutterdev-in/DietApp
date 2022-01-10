@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/eachRecipie/controllers/arguments_controller.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/eachRecipie/eachRecipieSubViews/eachIngViews/edit_each_ing.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/eachRecipie/each_recipie_ing_view.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/edit_each_recipie.dart';
-import 'package:dietapp_v002/screens/recipiesEdit/recipies_list.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/eachRecipie/recipies_list.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/.editeach_recipie_ingredients.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -15,8 +19,10 @@ class RecipiesListViewForEdit extends StatefulWidget {
 }
 
 class _RecipiesListViewForEditState extends State<RecipiesListViewForEdit> {
+  ArgumentsController argumentsController = Get.put(ArgumentsController());
   @override
   Widget build(BuildContext context) {
+
     Map recipiesMap = RecipiesList().recipiesMap;
 
     var tileColor = Colors.blue;
@@ -28,18 +34,20 @@ class _RecipiesListViewForEditState extends State<RecipiesListViewForEdit> {
           itemCount: 50,
           itemBuilder: (BuildContext context, int index) {
             var isTileTap = false;
-            String docID = recipiesMap.keys.elementAt(index);
-            String img = recipiesMap[docID]["img150"];
-            String title = recipiesMap[docID]["Common_name"];
+            String docID0 = recipiesMap.keys.elementAt(index);
+            String img = recipiesMap[docID0]["img150"];
+            String docID = recipiesMap[docID0]["fID"];
+            argumentsController.docID.value = docID;
+            String title = recipiesMap[docID0]["Common_name"];
             var isTap = false;
 
             return GFListTile(
               padding: EdgeInsets.all(2),
               margin: EdgeInsets.all(2),
               onTap: () {
-                Get.to(EditEachRecipie(), arguments: docID);
+                Get.to(EachRecipieIngView(), arguments: docID);
               },
-              color: isTap ? Colors.black12 : Colors.white,
+              //color: isTap ? Colors.black12 : Colors.white,
               avatar: GFAvatar(
                 backgroundColor: Colors.white,
                 child: CircleAvatar(
@@ -60,42 +68,6 @@ class _RecipiesListViewForEditState extends State<RecipiesListViewForEdit> {
               ),
               titleText: title,
             );
-
-            // ListTile(
-            //   title: Text("$index"),
-            // );
-
-            //   ListTile(
-            //     //selectedTileColor: Colors.black,
-            // tileColor: isTileTap ? Colors.black : Colors.black12,
-            // onTap: () {
-            //   setState(() {
-            //     isTileTap = true;
-            //   });
-            // },
-            // title: Text(img),
-            // // leading: Icon(Icons.food_bank),
-            // leading: GFAvatar(
-            //   backgroundColor: Colors.black12,
-            //   shape: GFAvatarShape.standard,
-            //   child: GFImageOverlay(
-            //     shape: BoxShape.rectangle,
-            //     boxFit: BoxFit.fitWidth,
-            //     image: NetworkImage(img),
-            //   ),
-            // ),
-            //GFImageOverlay(shape: BoxShape.circle,boxFit: BoxFit.fill,image: NetworkImage(recipiesMap[key]["img150"].toString()),),
-            // leading: CachedNetworkImage(
-            //   placeholder: (context, url) => const GFLoader(
-            //     type: GFLoaderType.ios,
-            //   ),
-            //   imageUrl: img,
-            //   errorWidget: (context, url, error) => Icon(
-            //     Icons.error,
-            //     color: Colors.red,
-            //   ),
-            // ),
-            // );
           }),
     );
   }

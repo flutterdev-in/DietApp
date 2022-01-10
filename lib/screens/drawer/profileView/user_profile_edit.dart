@@ -6,6 +6,7 @@ import 'package:dietapp_v002/firestore_models/userModel/user_google.dart';
 import 'package:dietapp_v002/firestore_models/userModel/user_profile.dart';
 import 'package:dietapp_v002/models/fire_user_models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
@@ -59,8 +60,6 @@ class _UserProfileEditState extends State<UserProfileEdit> {
           var userEmail = UserWelcomeData.fromMap(data).googleEmail;
          
             
-            
-            
             return Scaffold(
               body: FormBuilder(
                 key: _formKey,
@@ -87,6 +86,7 @@ class _UserProfileEditState extends State<UserProfileEdit> {
                     SizedBox(
                       height: 20,
                     ),
+                    
                     // FormBuilderTextField(
                     //   valueTransformer: (value) {
                     //     if (value == null || value == "" || value.isEmpty) {
