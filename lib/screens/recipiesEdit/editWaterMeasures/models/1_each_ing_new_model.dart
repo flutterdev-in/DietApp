@@ -1,37 +1,17 @@
-// To parse this JSON data, do
-//
-//     final eachIng = eachIngFromMap(jsonString);
-
-// import 'dart:convert';
-
-// import 'package:flutter/cupertino.dart';
-
-// EachIng eachIngFromMap(String str) => EachIng.fromMap(json.decode(str));
-
-// String eachIngToMap(EachIng data) => json.encode(data.toMap());
-
 class EachIng {
-  var webAmount;
-  var webUnit;
-  var webName;
-  var webNotes;
-  var newUnit;
-  var newName;
-  var fID;
-  var newAmount;
-  var totalGms;
-  var gmsPerUnit;
+  num?  newAmount, totalGms, gmsPerUnit;
+  String? webAmount,webUnit, webName, webNotes, newUnit, newName, fID;
   EachIng({
     this.webAmount,
-    this.webUnit,
-    this.webName,
+    this.webUnit ,
+    this.webName ,
     this.webNotes,
-    this.newUnit,
+    this.newUnit ,
     this.newName,
-    this.fID,
-    this.newAmount,
-    this.totalGms,
-    this.gmsPerUnit,
+    this.fID ,
+    this.newAmount ,
+    this.totalGms ,
+    this.gmsPerUnit ,
   });
   factory EachIng.fromMap(Map eachIngMap) {
     return EachIng(

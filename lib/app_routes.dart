@@ -6,6 +6,7 @@ import 'package:dietapp_v002/login/screens/home_view.dart';
 import 'package:dietapp_v002/login/screens/login_view.dart';
 import 'package:dietapp_v002/screens/homescreen.dart';
 import 'package:dietapp_v002/screens/homescreen2.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/1_each_recipie_ing_view.dart';
 import 'package:dietapp_v002/screens/recipies_screen/veg_recipies.dart/veg_recipies_list/veg_recipie_each/veg_recipie_each.dart';
 import 'package:dietapp_v002/screens/recipies_screen/veg_recipies.dart/veg_recipies_list/veg_recipie_each/veg_recipie_each_copy.dart';
 
@@ -36,5 +37,6 @@ class AppRoutes {
     GetPage(name: "/firestoreSearch2", page: () => FirestoreSearch2()),
     GetPage(name: "/vegRecipeEach2", page: () => VegRecipeEach2()),
     GetPage(name: "/vegRecipeEach", page: () => VegRecipeEach()),
+    GetPage(name: "/eachRecipieIngView", page: () => EachRecipieIngView()),
   ];
 }

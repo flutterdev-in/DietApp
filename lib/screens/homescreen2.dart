@@ -5,12 +5,12 @@ import 'package:dietapp_v002/firestore/firestore_search_copy.dart';
 import 'package:dietapp_v002/login/controllers/welcome_controller.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_drawer.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_profile_container.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/0_nin_updated_list%20copy.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_screen/new_0uodated_list.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_screen/serach_list.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/nin_measures_edit_form.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/nin_not_updated_list.dart';
-
-import 'package:dietapp_v002/screens/recipiesEdit/eachRecipie/recipies_listview.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/nin_updated_list.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +23,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 class HomeScreen2 extends GetView<WelcomeController> {
   HomeScreen2({Key? key}) : super(key: key);
   WelcomeController welcomeController = Get.put(WelcomeController());
-  
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -53,7 +53,7 @@ class HomeScreen2 extends GetView<WelcomeController> {
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "V0.3",
+              "V0.4",
               textScaleFactor: 1.3,
             ),
             Text(
@@ -72,7 +72,7 @@ class HomeScreen2 extends GetView<WelcomeController> {
               ),
               tileColor: Colors.yellow,
               onTap: () {
-                Get.to(RecipiesListViewForEdit());
+                Get.to(NINnotUpdatedList11());
               },
             ),
             SizedBox(

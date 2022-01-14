@@ -28,7 +28,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       themeMode: ThemeMode.system,
       initialBinding: HomeBinding(),
-      theme: ThemeData(primaryColor: Colors.pink),
+      theme: ThemeData(
+        primaryColor: Colors.pink,
+        textTheme: Theme.of(context).textTheme.apply(
+              fontSizeFactor: 1.0,
+            ),
+      ),
       title: 'DietApp',
       initialRoute: "/",
       //FirebaseAuth.instance.currentUser != null?  "/loginScreen" : "/welcomeScreen",
