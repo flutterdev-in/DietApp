@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/functions/0a_fetch_food_from_fire.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/1_each_recipie_ing_view.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/eachres.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_edit.dart/search_edit.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_edit.dart/search_edit_for_updatr.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/nin_measures_edit_form.dart';
@@ -12,55 +13,30 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 
-class NINnotUpdatedList11 extends StatelessWidget {
-  const NINnotUpdatedList11({Key? key}) : super(key: key);
+class WaterDoubtList extends StatelessWidget {
+  const WaterDoubtList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Updated list"), actions: [
-        ElevatedButton(
-          onPressed: () {
-            Get.to(UpdatedListReversed());
-          },
-          child: Text(
-            "Reverse List",
-            textScaleFactor: 1.3,
-          ),
-        )
-      ]),
+      appBar: AppBar(
+        title: Text("Doubt list"),
+      ),
       body: PaginateFirestore(
         query: FirebaseFirestore.instance
             .collection("FoodData")
             .where("fID", isGreaterThanOrEqualTo: "RV")
-            .where("updation", isEqualTo: 1)
-            .orderBy("fID", descending: false),
+            .where("waterWork", isEqualTo: 5),
         itemBuilderType: PaginateBuilderType.listView,
         itemBuilder: (index, context, snapshot) {
           final data = snapshot.data() as Map;
           var foodName = data['names']['Common_name'].toString();
-          var hindi = data['names']['Hindi'].toString();
-          var telugu = data['names']['Telugu'].toString();
           var imgURl = data['imgURL']['img150'].toString();
           var docID = data['fID'].toString();
-          var measureData = data['measureData'];
-          var uid = data["updationRemarks"].substring(0, 2);
-          var sortedKeys = measureData.keys.toList()..sort();
-          String subTitle = "";
-          for (String k in sortedKeys) {
-            if (k.contains("measure")) {
-              subTitle = subTitle + measureData[k].toString();
-            }
-            if (!k.contains("measure")) {
-              subTitle = subTitle + "(" + measureData[k].toString() + "),";
-            }
-
-            //else{subTitle = subTitle  +"("+measureData[k.toString()]+"),";}
-          }
-
+          var uid = data["waterRemarks"].substring(0, 2);
           return ListTile(
             onTap: () async {
-              Get.to(EachRecipieIngView(),
+              Get.to(EachRecipieIngVie(),
                   arguments: await FetchFoodDocs().getFmapImap(docID));
             },
             leading: GFAvatar(
@@ -91,7 +67,7 @@ class NINnotUpdatedList11 extends StatelessWidget {
               scrollDirection: Axis.horizontal,
             ),
             subtitle: SingleChildScrollView(
-              child: Text("$subTitle\n$docID"),
+              child: Text(docID),
               scrollDirection: Axis.horizontal,
             ),
             trailing: Text(uid),

@@ -1,6 +1,7 @@
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/functions/01_measures_function.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/functions/1fm_ing_data_model_for_gms.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/models/0_food_id_model_for_edit.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/each_recipie_ingredients.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -83,18 +84,23 @@ class EachRecipieIngView extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                height: 100,
-                width: Get.width - 100,
-                color: Colors.black87,
-                padding: EdgeInsets.fromLTRB(60, 15, 5, 0),
-                child: Text(
-                  fm.commonName.toString(),
-                  textScaleFactor: 1.5,
-                  //textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.white),
-                  // overflow: TextOverflow.ellipsis,
+              InkWell(
+                child: Container(
+                  height: 100,
+                  width: Get.width - 100,
+                  color: Colors.black87,
+                  padding: EdgeInsets.fromLTRB(60, 15, 5, 0),
+                  child: Text(
+                    fm.commonName.toString(),
+                    textScaleFactor: 1.5,
+                    //textAlign: TextAlign.left,
+                    style: TextStyle(color: Colors.white),
+                    // overflow: TextOverflow.ellipsis,
+                  ),
                 ),
+                onTap: () {
+                  Get.to(IngDataTexts(), arguments: fm.fID);
+                },
               ),
               InkWell(
                 child: IgnorePointer(
@@ -116,11 +122,17 @@ class EachRecipieIngView extends StatelessWidget {
 
     ////
     Widget cupertinoRow() {
-      List<int> listServe = [
-        fm.totalYields!.round(),
-        fm.itemsPerServing!.round(),
-        1
-      ];
+      List<int> listServe = [];
+
+      if (fm.totalYields!.round() == 1 && fm.itemsPerServing!.round() == 1) {
+        listServe.addAll([1]);
+      } else if (fm.itemsPerServing! == 1) {
+        listServe.addAll([fm.totalYields!.round(), 1]);
+      } else {
+        listServe
+            .addAll([fm.totalYields!.round(), fm.itemsPerServing!.round(), 1]);
+      }
+
       String serveName = fm.servingName!;
       return Row(
         children: [
@@ -274,27 +286,25 @@ class EachRecipieIngView extends StatelessWidget {
       );
     }
 
-    Widget decidingWidget() {
-      return Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: Get.width * 4.5 / 10,
-                child: Text(
-                  "  Input ${(rxValue.value * measureMap[rxKey.value]).toStringAsFixed(1)} g",
-                  textScaleFactor: 1.2,
-                ),
+    Widget decidingWidget() => Obx(() => Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: Get.width * 4.5 / 10,
+              child: Text(
+                "  Input ${(rxValue.value * measureMap[rxKey.value]).toStringAsFixed(1)} g",
+                textScaleFactor: 1.2,
               ),
-              SizedBox(
-                // width: Get.width * 5.5 / 2,
-                child: Text(
-                  "${((rxServe.value * ig.grossGms! / fm.totalYields! - rxValue.value * measureMap[rxKey.value]) * 100 / ig.waterGms!).toStringAsFixed(1)} % Water evaporated",
-                  textScaleFactor: 1.25,
-                ),
+            ),
+            SizedBox(
+              // width: Get.width * 5.5 / 2,
+              child: Text(
+                "${((rxServe.value * ig.grossGms! / fm.totalYields! - rxValue.value * measureMap[rxKey.value]) * 100 / ig.waterGms!).toStringAsFixed(1)} % Water evaporated",
+                textScaleFactor: 1.25,
               ),
-            ],
-          ));
-    }
+            ),
+          ],
+        ));
 
     Widget waterIngs() {
       return ListView.builder(
