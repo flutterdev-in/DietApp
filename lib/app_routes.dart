@@ -4,6 +4,7 @@ import 'package:dietapp_v002/login/bindings/login_binding.dart';
 import 'package:dietapp_v002/login/bindings/welcome_binding.dart';
 import 'package:dietapp_v002/login/screens/home_view.dart';
 import 'package:dietapp_v002/login/screens/login_view.dart';
+import 'package:dietapp_v002/main.dart';
 import 'package:dietapp_v002/screens/homescreen.dart';
 import 'package:dietapp_v002/screens/homescreen2.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/1_each_recipie_ing_view.dart';
@@ -16,6 +17,12 @@ class AppRoutes {
   //static const initial = GetPage(name: "/", page: ()=>HomeScreen2())
   static final routes = [
     // Intitial Route
+    // GetPage(
+    //   name: "/",
+    //   page: () => const DummyPage(),
+    //   //binding: HomeBinding(),
+    // ),
+
     GetPage(
       name: "/",
       page: () => HomeView(),
@@ -26,7 +33,6 @@ class AppRoutes {
     GetPage(
         name: "/loginScreen", page: () => LoginView(), binding: LoginBinding()),
     // Welcome
-    
 
     GetPage(
         name: "/homeScreen2",

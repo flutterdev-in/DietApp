@@ -1,22 +1,15 @@
 import 'package:dietapp_v002/app_routes.dart';
-import 'package:dietapp_v002/firestore.dart';
-import 'package:dietapp_v002/firestore_user.dart';
 import 'package:dietapp_v002/login/bindings/home_binding.dart';
-import 'package:dietapp_v002/login/screens/home_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
 
-//import 'firestore/firestore_search.dart';
-
 Future<void> main() async {
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  //HomeBinding().dependencies();
   runApp(const MyApp());
 }
 
@@ -30,9 +23,9 @@ class MyApp extends StatelessWidget {
       initialBinding: HomeBinding(),
       theme: ThemeData(
         primaryColor: Colors.pink,
-        textTheme: Theme.of(context).textTheme.apply(
-              fontSizeFactor: 1.0,
-            ),
+        // textTheme: Theme.of(context).textTheme.apply(
+        //       fontSizeFactor: 1.0,
+        //     ),
       ),
       title: 'DietApp',
       initialRoute: "/",

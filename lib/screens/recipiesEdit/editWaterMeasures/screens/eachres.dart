@@ -24,70 +24,15 @@ class EachRecipieIngVie extends StatelessWidget {
     FoodModel fm = FoodModel.fromMap(fMapiMap["fData"]);
     IngDataModelForGms ig =
         IngDataModelForGms().ingDataModelForGms(fMapiMap["ingData"]);
-    Map measureVariables = MeasuresF().measureGet(fm.measureData!);
-    List measureKeys = measureVariables["measureList"];
-    Map measureMap = measureVariables["measureMap"];
-    List rangeList = measureVariables["rangeList"];
-    List<num> listValues = [
-      0.1,
-      0.25,
-      0.5,
-      0.75,
-      1,
-      1.25,
-      1.5,
-      1.75,
-      2,
-      2.25,
-      2.5,
-      2.75,
-      3,
-      3.25,
-      3.5,
-      3.75,
-      4,
-      4.5,
-      5,
-      6,
-      7,
-      7.5,
-      8,
-      9,
-      10,
-      15,
-      20,
-      25,
-      50,
-      75,
-      100,
-      200,
-      250,
-      300,
-      400,
-      500,
-      600,
-      700,
-      750,
-      800,
-      900,
-      1000,
-      1250,
-      1500,
-      1750,
-      2000,
-      2500,
-      5000,
-      7500,
-      10000
-    ];
-    int initiaIndex = 3;
-    var rxKey = "".obs;
-    rxKey.value = measureKeys[0];
-    var rxValue = listValues[initiaIndex].obs;
-    num MeasureMapValue = listValues[initiaIndex] * measureMap[rxKey.value];
-    var rxMeasureMapValue = MeasureMapValue.obs;
-    Rx<int> rxServe = 1.obs;
-    Rx<num> rxReducedWaterGms = 0.0.obs;
+    int h = ig.waterGms! ~/ 100 + 1;
+    List lh = Iterable.generate(h).toList();
+    List lt = Iterable.generate(10).toList();
+    List ld = Iterable.generate(10).toList();
+
+    Rx<int> rxLh = 0.obs;
+    Rx<int> rxLt = 0.obs;
+    Rx<int> rxLd = 0.obs;
+
     String uid = FirebaseAuth.instance.currentUser!.uid;
     String uid3 = uid.substring(0, 3);
     ////
@@ -103,9 +48,9 @@ class EachRecipieIngVie extends StatelessWidget {
                   height: 100,
                   width: Get.width - 100,
                   color: Colors.black87,
-                  padding: EdgeInsets.fromLTRB(60, 15, 5, 0),
+                  padding: EdgeInsets.fromLTRB(10, 15, 5, 0),
                   child: Text(
-                    fm.commonName.toString(),
+                    "${fm.commonName},\n (${fm.fID})",
                     textScaleFactor: 1.5,
                     //textAlign: TextAlign.left,
                     style: TextStyle(color: Colors.white),
@@ -138,59 +83,63 @@ class EachRecipieIngVie extends StatelessWidget {
 
     ////
     Widget cupertinoRow() {
-      List<int> listServe = [];
-
-      if (fm.totalYields!.round() == 1 && fm.itemsPerServing!.round() == 1) {
-        listServe.addAll([1]);
-      } else if (fm.itemsPerServing! == 1) {
-        listServe.addAll([fm.totalYields!.round(), 1]);
-      } else {
-        listServe
-            .addAll([fm.totalYields!.round(), fm.itemsPerServing!.round(), 1]);
-      }
-      String serveName = fm.servingName!;
       return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          SizedBox(
+            height: 150,
+            width: Get.width * 3.5 / 10,
+            child: CupertinoPicker(
+                scrollController: FixedExtentScrollController(initialItem: 0),
+                diameterRatio: 1000,
+                itemExtent: 60,
+                onSelectedItemChanged: (index) {
+                  rxLh.value = lh[index];
+                },
+                children: lh
+                    .map((e) => Center(
+                            child: Text(
+                          "${e}00",
+                          textScaleFactor: 1.05,
+                        )))
+                    .toList()),
+          ),
           SizedBox(
             height: 150,
             width: Get.width * 3 / 10,
             child: CupertinoPicker(
-                scrollController: FixedExtentScrollController(initialItem: 1),
+                looping: true,
+                scrollController: FixedExtentScrollController(initialItem: 0),
                 diameterRatio: 1000,
                 itemExtent: 60,
                 onSelectedItemChanged: (index) {
-                  rxServe.value = listServe[index];
+                  rxLt.value = lt[index];
                 },
-                children: listServe
-                    .map((e) => Center(child: Text("$e $serveName")))
-                    .toList()),
-          ),
-          SizedBox(
-            height: 150,
-            width: Get.width * 5 / 10,
-            child: CupertinoPicker(
-                diameterRatio: 1000,
-                itemExtent: 60,
-                onSelectedItemChanged: (index) {
-                  rxKey.value = measureKeys[index];
-                },
-                children: measureKeys
-                    .map((e) => Center(child: Text(e.toString())))
+                children: lt
+                    .map((e) => Center(
+                            child: Text(
+                          "${e}0",
+                          textScaleFactor: 1.05,
+                        )))
                     .toList()),
           ),
           Container(
             height: 150,
-            width: Get.width * 2 / 10,
+            width: Get.width * 2.5 / 10,
             child: CupertinoPicker(
-                scrollController:
-                    FixedExtentScrollController(initialItem: initiaIndex),
+                looping: true,
+                scrollController: FixedExtentScrollController(initialItem: 0),
                 diameterRatio: 1000,
                 itemExtent: 60,
                 onSelectedItemChanged: (index) {
-                  rxValue.value = listValues[index].toDouble();
+                  rxLd.value = ld[index];
                 },
-                children: listValues.map((e) {
-                  return Center(child: Text(e.toString()));
+                children: ld.map((e) {
+                  return Center(
+                      child: Text(
+                    e.toString(),
+                    textScaleFactor: 1.05,
+                  ));
                 }).toList()),
           ),
         ],
@@ -198,236 +147,111 @@ class EachRecipieIngVie extends StatelessWidget {
     }
 
     Widget table() {
-      return Table(
-        children: [
+      return Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Table(columnWidths: {
+          0: FlexColumnWidth(2),
+          1: FlexColumnWidth(0.7),
+          2: FlexColumnWidth(0.7)
+        }, children: [
           TableRow(children: [
             Text(
-              "",
-              textScaleFactor: 1.2,
-            ),
-            Text(
-              "Net Gms",
+              "Total Recipie weight",
               textScaleFactor: 1.1,
             ),
             Text(
-              "Water Gms",
-              textScaleFactor: 1.1,
-            ),
-            Text(
-              "Gross Gms",
-              textScaleFactor: 1.1,
-            )
-          ]),
-          TableRow(children: [
-            Text(
-              "Percent",
-              textScaleFactor: 1.1,
-            ),
-            Text(
-              "${(ig.netGms! * 100 / ig.grossGms!).round()} %",
-              textScaleFactor: 1.1,
-            ),
-            Text(
-              "${(ig.waterGms! * 100 / ig.grossGms!).round()} %",
+              "${ig.grossGms!.round()} g",
               textScaleFactor: 1.1,
             ),
             Text(
               "100 %",
               textScaleFactor: 1.1,
-            ),
+            )
           ]),
           TableRow(children: [
             Text(
-              "${fm.totalYields!.round()} ${fm.servingName}",
+              "Other ingredients weight",
               textScaleFactor: 1.1,
             ),
             Text(
-              "${ig.netGms}",
+              "${ig.netGms!.round()} g",
               textScaleFactor: 1.1,
             ),
             Text(
-              "${ig.waterGms}",
+              "${(ig.netGms! * 100 / ig.grossGms!).round()} %",
               textScaleFactor: 1.1,
-            ),
-            Text(
-              "${ig.grossGms}",
-              textScaleFactor: 1.1,
-            ),
+            )
           ]),
-          fm.itemsPerServing! == fm.totalYields!
-              ? TableRow(children: [Text(""), Text(""), Text(""), Text("")])
-              : TableRow(children: [
-                  Text(
-                    "${fm.itemsPerServing!.round()} ${fm.servingName}",
-                    textScaleFactor: 1.1,
-                  ),
-                  Text(
-                    "${(ig.netGms! * fm.itemsPerServing! / fm.totalYields!).round()}",
-                    textScaleFactor: 1.1,
-                  ),
-                  Text(
-                    "${(ig.waterGms! * fm.itemsPerServing! / fm.totalYields!).round()}",
-                    textScaleFactor: 1.1,
-                  ),
-                  Text(
-                    "${(ig.grossGms! * fm.itemsPerServing! / fm.totalYields!).round()}",
-                    textScaleFactor: 1.1,
-                  ),
-                ]),
-          fm.itemsPerServing! == 1
-              ? TableRow(children: [Text(""), Text(""), Text(""), Text("")])
-              : TableRow(children: [
-                  Text("1 ${fm.servingName}"),
-                  Text(
-                    "${(ig.netGms! / fm.totalYields!).round()}",
-                    textScaleFactor: 1.1,
-                  ),
-                  Text(
-                    "${(ig.waterGms! / fm.totalYields!).round()}",
-                    textScaleFactor: 1.1,
-                  ),
-                  Text(
-                    "${(ig.grossGms! / fm.totalYields!).round()}",
-                    textScaleFactor: 1.1,
-                  ),
-                ]),
-        ],
+          TableRow(children: [
+            Text("Gross water weight",
+                textScaleFactor: 1.1,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("${ig.waterGms!.round()} g",
+                textScaleFactor: 1.1,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("${(ig.waterGms! * 100 / ig.grossGms!).round()} %",
+                textScaleFactor: 1.1,
+                style: TextStyle(fontWeight: FontWeight.bold))
+          ]),
+        ]),
       );
     }
 
-    Rx<num> rxMin = 1.0.obs;
-    Rx<num> rxMax = 1.0.obs;
-    Widget minmax() {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(30, 0, 10, 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Obx(() {
-              rxMin.value = (ig.netGms! *
-                  rxServe.value /
-                  fm.totalYields! /
-                  measureMap[rxKey.value]!);
-              rxMax.value = (ig.grossGms! *
-                  rxServe.value /
-                  fm.totalYields! /
-                  measureMap[rxKey.value]!);
-              return Row(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: Text(
-                      "Min - ${rxMin.value.toStringAsFixed(1)}",
-                      textAlign: TextAlign.start,
-                      textScaleFactor: 1.3,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Text(
-                    "Max - ${rxMax.value.toStringAsFixed(1)}",
-                    textAlign: TextAlign.start,
-                    textScaleFactor: 1.3,
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                ],
-              );
-            }),
-            SizedBox(
-              child: Obx(() {
-                TextEditingController tc = TextEditingController();
-                tc.text = rxValue.value.toString();
-                tc.selection = TextSelection.fromPosition(
-                    TextPosition(offset: tc.text.length));
-                return TextField(
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  decoration: InputDecoration(hintText: "Enter"),
-                  keyboardType: TextInputType.number,
-                  controller: tc,
-                  onChanged: (value) {
-                    rxValue.value = double.parse(value);
-                  },
-                );
-              }),
-              width: 60,
-            ),
-          ],
-        ),
-      );
-    }
-
-    Widget decidingWidget() {
-      rxReducedWaterGms.value =
-          (rxServe.value * ig.grossGms! / fm.totalYields!) -
-              (rxValue.value * measureMap[rxKey.value]);
-      return Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: Get.width * 4.5 / 10,
-                child: Text(
-                  "  Input ${(rxValue.value * measureMap[rxKey.value]).toStringAsFixed(1)} g",
-                  textScaleFactor: 1.2,
+    Widget waterWidget() {
+      return ig.waterGms == 0
+          ? Container(
+              height: 40,
+              color: Colors.black87,
+              child: Center(
+                child: Text("Water not used in this recipie",
+                    textScaleFactor: 1.25,
+                    style: TextStyle(color: Colors.white)),
+              ))
+          : Container(
+              height: 70,
+              color: Colors.black87,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text("Total water discarded / evaporated",
+                        textScaleFactor: 1.4,
+                        style: TextStyle(color: Colors.white)),
+                    Obx(() {
+                      int reducedWater =
+                          rxLh.value * 100 + rxLt.value * 10 + rxLd.value;
+                      num percent = (reducedWater / ig.waterGms!) * 100;
+                      return Text(
+                          "= $reducedWater g ( ${percent.toStringAsFixed(0)} %)",
+                          textScaleFactor: 1.4,
+                          style: TextStyle(color: Colors.white));
+                    }),
+                  ],
                 ),
               ),
-              SizedBox(
-                  // width: Get.width * 5.5 / 2,
-                  child: ig.waterGms == 0
-                      ? Text(
-                          "Water not used this recipie",
-                          textScaleFactor: 1.2,
-                        )
-                      : Text(
-                          "${(((rxServe.value * ig.grossGms! / fm.totalYields!) - (rxValue.value * measureMap[rxKey.value])) * 100 / ig.waterGms!).toStringAsFixed(1)} % Water evaporated",
-                          textScaleFactor: 1.25,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        )),
-            ],
-          ));
-    }
-
-    Widget decidingGms() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SizedBox(
-            width: Get.width * 4.5 / 10,
-            child: ig.waterGms == 0
-                ? Text(
-                    "Final Recipie = ${(ig.netGms!).toStringAsFixed(0)} g",
-                    textScaleFactor: 1.2,
-                  )
-                : Obx(() => Text(
-                      "Final Recipie = ${(ig.netGms! + ig.waterGms! + (rxServe.value * ig.grossGms! / fm.totalYields!) - (rxValue.value * measureMap[rxKey.value])).toStringAsFixed(0)} g",
-                      textScaleFactor: 1.2,
-                    )),
-          ),
-          SizedBox(
-            // width: Get.width * 5.5 / 2,
-            child: ig.waterGms == 0
-                ? Text(
-                    "Final water = 0g",
-                    textScaleFactor: 1.2,
-                  )
-                : Obx(() => Text(
-                      "Final Water = ${(ig.waterGms! - (rxServe.value * ig.grossGms! / fm.totalYields!) - (rxValue.value * measureMap[rxKey.value])).toStringAsFixed(0)} g",
-                      textScaleFactor: 1.2,
-                    )),
-          ),
-        ],
-      );
-    }
-
-    Widget waterIngs() {
-      return ListView.builder(
-          padding: EdgeInsets.fromLTRB(20, 5, 10, 0),
-          shrinkWrap: true,
-          itemCount: ig.listWaterIngs!.length,
-          itemBuilder: (context, index) {
-            return Text(
-              "${ig.listWaterIngs![index]}",
-              textScaleFactor: 1.3,
             );
-          });
+    }
+
+    Widget wrongButton() {
+      return ElevatedButton(
+          onPressed: () async {
+            await FirebaseFirestore.instance
+                .collection("FoodData")
+                .doc(fm.fID)
+                .update({"waterWork": 8, "waterRemarks": uid3});
+            Get.back();
+            Get.snackbar(
+              "Moved to Wrong list",
+              "",
+              duration: Duration(seconds: 1),
+            );
+          },
+          child: Text("Wrong"),
+          style: ElevatedButton.styleFrom(
+              fixedSize: Size(80, 60),
+              primary: Colors.brown[600],
+              elevation: 20,
+              textStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)));
     }
 
     Widget doubtButton() {
@@ -446,10 +270,10 @@ class EachRecipieIngVie extends StatelessWidget {
           },
           child: Text("Doubt"),
           style: ElevatedButton.styleFrom(
-              fixedSize: Size(Get.width * 2.4 / 5, 60),
-              primary: Colors.brown[600],
+              fixedSize: Size(80, 60),
+              primary: Colors.blueGrey[600],
               elevation: 20,
-              textStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w500)));
+              textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)));
     }
 
     Widget submitButton() {
@@ -471,15 +295,15 @@ class EachRecipieIngVie extends StatelessWidget {
               };
             } else {
               num reducedWaterGms =
-                  (rxServe.value * ig.grossGms! / fm.totalYields!) -
-                      (rxValue.value * measureMap[rxKey.value]);
+                  rxLh.value * 100 + rxLt.value * 10 + rxLd.value;
+
               num netWaterGms = ig.waterGms! - reducedWaterGms;
               num netRecipieGms = ig.netGms! + netWaterGms;
               updateMap = {
                 "recipieGms": {
                   "grossIngGms": ig.netGms!.toInt(),
-                  "grossRecipieGms": ig.grossGms!,
-                  "grossWaterGms": ig.waterGms!,
+                  "grossRecipieGms": ig.grossGms!.toInt(),
+                  "grossWaterGms": ig.waterGms!.toInt(),
                   "netWaterGms": netWaterGms.toInt(),
                   "netRecipieGms": netRecipieGms.toInt(),
                   "reducedWaterGms": reducedWaterGms.toInt(),
@@ -502,10 +326,40 @@ class EachRecipieIngVie extends StatelessWidget {
           },
           child: Text("Submit"),
           style: ElevatedButton.styleFrom(
-              fixedSize: Size(Get.width * 2.4 / 5, 60),
+              fixedSize: Size(110, 60),
               primary: Colors.green[800],
               elevation: 20,
               textStyle: TextStyle(fontSize: 22, fontWeight: FontWeight.w500)));
+    }
+
+    Widget buttons() {
+      return Container(
+          margin: EdgeInsets.all(9),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                width: 40,
+                height: 60,
+              ),
+              wrongButton(),
+              doubtButton(),
+              submitButton()
+            ],
+          ));
+    }
+
+    Widget waterIngs() {
+      return ListView.builder(
+          padding: EdgeInsets.fromLTRB(12, 2, 10, 2),
+          shrinkWrap: true,
+          itemCount: ig.listWaterIngs!.length,
+          itemBuilder: (context, index) {
+            return Text(
+              "${ig.listWaterIngs![index]}",
+              textScaleFactor: 1.3,
+            );
+          });
     }
 
     return SafeArea(
@@ -514,6 +368,7 @@ class EachRecipieIngVie extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
+          leading: BackButton(color: Colors.blue),
         ),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
@@ -521,6 +376,7 @@ class EachRecipieIngVie extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(children: [
+                buttons(),
                 Container(
                   child: topWidget(),
                   color: Colors.amber,
@@ -532,25 +388,19 @@ class EachRecipieIngVie extends StatelessWidget {
                     color: Colors.black12,
                   ),
                 ),
-                minmax(),
+                waterIngs(),
                 SizedBox(
                   height: 10,
                 ),
-                decidingWidget(),
+                waterWidget(),
                 SizedBox(
                   height: 5,
                 ),
-                decidingGms(),
                 SizedBox(
                   height: 5,
                 ),
-                cupertinoRow(),
-                waterIngs(),
+                ig.waterGms == 0 ? SizedBox() : cupertinoRow(),
               ]),
-              Row(
-                children: [doubtButton(), submitButton()],
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              ),
             ],
           ),
         ),
@@ -567,6 +417,12 @@ class RecipieWebPage extends StatelessWidget {
     String? recipieURL = Get.arguments;
     return SafeArea(
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: BackButton(color: Colors.blue),
+        ),
         body: WebView(
           javascriptMode: JavascriptMode.unrestricted,
           initialUrl: recipieURL,

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/functions/0a_fetch_food_from_fire.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/1_each_recipie_ing_view.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/2_doubt_list_and_no_water_list.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/eachres.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_edit.dart/search_edit.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_edit.dart/search_edit_for_updatr.dart';
@@ -19,14 +20,22 @@ class WaterSubmittedList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Submitted list"),
-      ),
+      appBar: AppBar(title: Text("Submitted list"), actions: [
+        GFButton(
+          onPressed: () {
+            Get.to(WaterDoubtAndNoWaterList(), arguments: 3);
+          },
+          child: Text(
+            "Zero List",
+            textScaleFactor: 1.2,
+          ),
+        )
+      ]),
       body: PaginateFirestore(
         query: FirebaseFirestore.instance
             .collection("FoodData")
-            .where("fID", isGreaterThanOrEqualTo: "RV")
-            .where("waterWork", isEqualTo: 10),
+            .where("waterWork", isEqualTo: 10)
+            .orderBy("fID"),
         itemBuilderType: PaginateBuilderType.listView,
         itemBuilder: (index, context, snapshot) {
           final data = snapshot.data() as Map;
@@ -75,7 +84,7 @@ class WaterSubmittedList extends StatelessWidget {
               child: grosWaterGms == 0
                   ? Text("$docID : Water not used in this recipie")
                   : Text(
-                      "$docID : ${waterPercent.toStringAsFixed(1)}% water reduced"),
+                      "$docID : ${waterPercent.toStringAsFixed(0)}% water reduced"),
               scrollDirection: Axis.horizontal,
             ),
             trailing: Text(uid),

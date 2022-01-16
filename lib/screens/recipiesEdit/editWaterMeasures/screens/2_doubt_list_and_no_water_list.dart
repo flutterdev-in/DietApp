@@ -13,20 +13,31 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 
-class WaterDoubtList extends StatelessWidget {
-  const WaterDoubtList({Key? key}) : super(key: key);
+class WaterDoubtAndNoWaterList extends StatelessWidget {
+  const WaterDoubtAndNoWaterList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int waterWork = Get.arguments;
+    String title = "Zero list";
+    if (waterWork == 5) {
+      title = "Doubt list";
+    }
+    if (waterWork == 3) {
+      title = "Zero list";
+    }
+    if (waterWork == 8) {
+      title = "Wrong list";
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text("Doubt list"),
+        title: Text(title.toString()),
       ),
       body: PaginateFirestore(
         query: FirebaseFirestore.instance
             .collection("FoodData")
-            .where("fID", isGreaterThanOrEqualTo: "RV")
-            .where("waterWork", isEqualTo: 5),
+            .where("waterWork", isEqualTo: waterWork)
+            .orderBy("fID"),
         itemBuilderType: PaginateBuilderType.listView,
         itemBuilder: (index, context, snapshot) {
           final data = snapshot.data() as Map;

@@ -34,10 +34,16 @@ class IngDataTexts extends StatelessWidget {
               }
               if (eachIng is Map) {
                 EachIng ig = EachIng.fromMap(eachIng);
-                return Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    "${ig.fID} : ${ig.newAmount} ${ig.newUnit} ${ig.newName} = ${ig.totalGms} g",
+                return ListTile(
+                  leading: Text(ig.fID!),
+                  title: SingleChildScrollView(
+                    child: Text(
+                      "${ig.newAmount} ${ig.newUnit} ${ig.newName} = ${ig.totalGms!.toStringAsFixed(1)} g",
+                      textScaleFactor: 1.3,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "${ig.webAmount} : ${ig.webUnit} ${ig.webName} ${ig.webNotes}",
                     textScaleFactor: 1.3,
                   ),
                 );

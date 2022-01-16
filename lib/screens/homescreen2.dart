@@ -5,7 +5,9 @@ import 'package:dietapp_v002/firestore/firestore_search_copy.dart';
 import 'package:dietapp_v002/login/controllers/welcome_controller.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_drawer.dart';
 import 'package:dietapp_v002/screens/drawer/mainView/main_profile_container.dart';
-import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/0_tobe_updated_list%20copy.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/0_to_be_update_list.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/3_no_water_coding%20copy.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/3_no_water_coding.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_screen/new_0uodated_list.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/new_screen/serach_list.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/nin_edit/nin_measures_edit_form.dart';
@@ -53,7 +55,7 @@ class HomeScreen2 extends GetView<WelcomeController> {
           //crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "V0.4",
+              "V0.6",
               textScaleFactor: 1.3,
             ),
             Text(
@@ -65,9 +67,19 @@ class HomeScreen2 extends GetView<WelcomeController> {
             SizedBox(
               height: 50,
             ),
+            // ListTile(
+            //   title: Text(
+            //     "No water coding",
+            //     textScaleFactor: 1.5,
+            //   ),
+            //   tileColor: Colors.yellow,
+            //   onTap: () {
+            //     Get.to(IsRecipie());
+            //   },
+            // ),
             ListTile(
               title: Text(
-                "Edit recipies ingredients",
+                "Edit water in Recipies",
                 textScaleFactor: 1.5,
               ),
               tileColor: Colors.yellow,

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/functions/0a_fetch_food_from_fire.dart';
-import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/2_doubt_list%20copy%203.dart';
+import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/2_doubt_list_and_no_water_list.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/2_updated_list%20copy%202.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/1_each_recipie_ing_view.dart';
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/screens/eachres.dart';
@@ -36,10 +36,16 @@ class NINnotUpdatedList11 extends StatelessWidget {
               ),
               GFButton(
                 onPressed: () {
-                  Get.to(WaterDoubtList());
+                  Get.to(WaterDoubtAndNoWaterList(), arguments: 5);
                 },
                 text: "Doubt list",
-              )
+              ),
+              GFButton(
+                onPressed: () {
+                  Get.to(WaterDoubtAndNoWaterList(), arguments: 8);
+                },
+                text: "Wrong list",
+              ),
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
           ),
@@ -47,7 +53,9 @@ class NINnotUpdatedList11 extends StatelessWidget {
             child: PaginateFirestore(
               query: FirebaseFirestore.instance
                   .collection("FoodData")
-                  .where("fID", isGreaterThanOrEqualTo: "RV"),
+                  .where("isRecipie", isEqualTo: true)
+                  .where("waterWork", isEqualTo: 0)
+                  .orderBy("fID"),
               itemBuilderType: PaginateBuilderType.listView,
               itemBuilder: (index, context, snapshot) {
                 final data = snapshot.data() as Map;
@@ -86,10 +94,7 @@ class NINnotUpdatedList11 extends StatelessWidget {
                     ),
                     scrollDirection: Axis.horizontal,
                   ),
-                  subtitle: SingleChildScrollView(
-                    child: Text(docID),
-                    scrollDirection: Axis.horizontal,
-                  ),
+                  subtitle: Text(docID),
                 );
               },
               isLive: true,

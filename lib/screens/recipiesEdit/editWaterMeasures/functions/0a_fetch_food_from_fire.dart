@@ -3,7 +3,7 @@ import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/models/1_eac
 import 'package:dietapp_v002/screens/recipiesEdit/editWaterMeasures/models/0_food_id_model_for_edit.dart';
 
 class FetchFoodDocs {
- Future<Map> getFmapImap(fID) async {
+  Future<Map> getFmapImap(fID) async {
     Map fData = {};
     Map ingData = {};
     await FirebaseFirestore.instance
@@ -21,7 +21,7 @@ class FetchFoodDocs {
         .collection("FoodData")
         .doc(fID)
         .collection("ingData")
-        .doc("draftIngData")
+        .doc("ingData")
         .get()
         .then((docSnap) {
       if (docSnap.exists) {
